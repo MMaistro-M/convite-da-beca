@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Aniversário da Beca!</title>
+    <style>
+        /* INÍCIO DO CSS */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Para evitar scroll indesejado */
+        }
+
+        .carta-container {
+            width: 90%; /* Ajuste para celular */
+            max-width: 380px; /* Limite máximo para a carta, ajustado para a proporção da imagem */
+            /* Para a proporção da sua imagem (768px de largura por 1152px de altura) */
+            aspect-ratio: 768 / 1152; 
+            perspective: 1000px; /* Para as transformações 3D */
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Sombra mais proeminente */
+            border-radius: 15px; /* Bordas mais arredondadas */
+            background-color: #ffffff; /* Fundo da carta */
+            overflow: hidden; /* Para garantir que as bordas arredondadas funcionem bem */
+        }
+
+        .carta-frente {
+            position: absolute; /* Posição absoluta para cobrir o container */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Altura total do container para a frente da carta */
+            background-color: #e0b299; /* Cor da frente da carta, pode ser ajustada */
+            border-radius: 15px; /* Manter as bordas arredondadas */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: transform 0.8s ease-in-out;
+            transform-origin: top; /* Ponto de origem da transformação */
+            z-index: 2; /* Para garantir que fique acima do conteúdo */
+        }
+
+        .aba-superior {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%; /* Metade da altura para a aba */
+            background-color: #c98e6e; /* Cor da aba */
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out;
+            /* Formato de triangulo para a aba */
+            clip-path: polygon(0 0, 100% 0, 50% 100%); 
+        }
+
+        .selo {
+            font-size: 3em;
+            z-index: 3; /* Mais alto que a aba */
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* Sombra para o selo */
+        }
+
+        .instrucao {
+            position: absolute;
+            bottom: 15px;
+            font-size: 1em; /* Levemente maior */
+            color: #fff;
+            z-index: 3;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .convite-conteudo {
+            position: absolute; /* Posição absoluta para preencher o container */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px; /* Manter as bordas arredondadas */
+            overflow: hidden; /* Importante para a imagem não vazar */
+            display: flex; /* Para centralizar o link do mapa */
+            flex-direction: column;
+            justify-content: space-between; /* Espaço entre a imagem e o link */
+            align-items: center;
+            transform: translateY(100%); /* Escondido abaixo inicialmente */
+            opacity: 0;
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+            z-index: 1; /* Abaixo da carta-frente */
+        }
+
+        .imagem-convite {
+            width: 100%;
+            height: 100%; /* Preencher a altura do convite-conteudo */
+            object-fit: cover; /* Cobre a área sem distorcer, cortando se necessário */
+            display: block; /* Remove espaço extra abaixo da imagem */
+            border-radius: 15px; /* Manter as bordas arredondadas */
+        }
+
+        .link-mapa {
+            margin-top: 10px; /* Pequena margem acima do link */
+            margin-bottom: 10px; /* Pequena margem abaixo do link */
+            text-align: center;
+            width: 100%; /* Para que o link ocupe toda a largura */
+        }
+
+        .link-mapa a {
+            background-color: rgba(255, 99, 71, 0.8); /* Fundo semi-transparente para o link */
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px; /* Padding para o botão do link */
+            border-radius: 20px; /* Bordas arredondadas para parecer um botão */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease;
+            display: inline-block; /* Para que o padding funcione */
+        }
+
+        .link-mapa a:hover {
+            background-color: rgba(255, 99, 71, 1); /* Cor sólida no hover */
+        }
+
+        /* Classes para a animação */
+        .carta-container.aberta .carta-frente {
+            transform: rotateX(-180deg); /* Vira a carta para "trás" */
+        }
+
+        .carta-container.aberta .aba-superior {
+            transform: rotateX(180deg) translateY(-100%); /* Vira a aba para "dentro" */
+        }
+
+        .carta-container.aberta .convite-conteudo {
+            transform: translateY(0); /* Mostra o conteúdo */
+            opacity: 1;
+        }
+
+        /* Responsividade básica para telas menores */
+        @media (max-width: 400px) {
+            .carta-container {
+                width: 95%;
+            }
+            .selo {
+                font-size: 2.5em;
+            }
+            .instrucao {
+                font-size: 0.9em;
+            }
+        }
+        /* FIM DO CSS */
+    </style>
+</head>
+<body>
+    <div class="carta-container" id="cartaContainer">
+        <div class="carta-frente">
+            <div class="aba-superior"></div>
+            <div class="selo">🎉</div>
+            <p class="instrucao">Toque para abrir!</p>
+        </div>
+        <div class="convite-conteudo">
+            <img src="WhatsApp Image 2025-07-14 at 17.18.22.jpeg" alt="Convite de Aniversário da Beca" class="imagem-convite">
+            <p class="link-mapa"><a href="https://www.google.com/maps/search/Rua+Jos%C3%A9+Maria+Terron,+86+%E2%80%93+Vila+Santa+Eug%C3%AAnia" target="_blank">Ver no mapa</a></p>
+        </div>
+    </div>
+
+    <script>
+        /* INÍCIO DO JAVASCRIPT */
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartaContainer = document.getElementById('cartaContainer');
+
+            // Adiciona o evento de clique (ou toque em dispositivos móveis)
+            cartaContainer.addEventListener('click', () => {
+                // Adiciona a classe 'aberta' ao container, que dispara as animações CSS
+                cartaContainer.classList.add('aberta');
+            });
+        });
+        /* FIM DO JAVASCRIPT */
+    </script>
+</body>
+</html>
